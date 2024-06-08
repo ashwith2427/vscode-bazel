@@ -11,7 +11,7 @@ build:windows --cxxopt=/std:c++20
 build:windows --cxxopt=/Zc:__cplusplus
 
 build:linux --platforms=//:linux
-build:linux --extra_toolchains=@llvm_toolchain//:cc-toolchain-linux
-build:linux --cxxopt=-std=c++20
-build:linux --cxxopt=-stdlib=libstdc++
-build:linux --linkopt=-lstdc++
+#build:linux --extra_toolchains=@llvm_toolchain//:cc-toolchain-linux
+#build:linux --cxxopt=-std=c++20
+#build:linux --cxxopt=-stdlib=libstdc++
+#build:linux --linkopt=-lstdc++

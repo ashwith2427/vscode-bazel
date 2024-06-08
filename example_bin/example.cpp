@@ -2,12 +2,15 @@
 #include <cstdint>
 #include <cstdlib>
 #include <ios>
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-#define GLM_FORCE_RADIANS
-#define GLM_FORCE_DEPTH_ZERO_TO_ONE
-#include <glm/vec4.hpp>
-#include <glm/mat4x4.hpp>
+
+//TODO: re-enable once satisfied with the results of the example build.
+//#define GLFW_INCLUDE_VULKAN
+//#include <GLFW/glfw3.h>
+//#define GLM_FORCE_RADIANS
+//#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+//#include <glm/vec4.hpp>
+//#include <glm/mat4x4.hpp>
+
 #include <fstream>
 #include <vector>
 #include <iostream>
@@ -21,7 +24,9 @@ int main(int argc, char** argv) {
     std::unique_ptr<Runfiles> runfiles(Runfiles::Create(argv[0], &error));
 
     // Get the runfile path
-    std::string path = runfiles->Rlocation("//example_bin/data:Roboto-Black.ttf");
+    // NOTE: _main is the name of the unnamed top level workspace.  Not sure why
+    // this is not documented properly in the runfiles library.
+    std::string path = runfiles->Rlocation("_main/example_bin/data/Roboto-Black.ttf");
 
     std::ifstream file(path,std::ios::in | std::ios::ate | std::ios::binary);
     if (!file.is_open()) {
