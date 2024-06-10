@@ -23,17 +23,6 @@ platform(
 )
 
 bzlws_copy(
-    name = "copy_compile_commands",
-    visibility = ["//visibility:private"],
-    testonly = True,
-    out = "{FILENAME}",
-    srcs = [":compdb"],
-    substitutions = {
-        "@bzlws//info:execution_root": "__EXEC_ROOT__",
-    },
-)
-
-bzlws_copy(
     name = "copy_vscode_config_files",
     out = ".vscode/{BASENAME}.json",
     srcs = [
