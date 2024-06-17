@@ -7,11 +7,9 @@ cc_binary(
     srcs = ["example.cpp"],
     deps = [
         # TODO: re-enable once satisfied with the results of the example build.
-        "//third_party/glfw",
-        "//third_party/glm",
-        "@rules_vulkan//vulkan:vulkan_cc_library",
         "@bazel_tools//tools/cpp/runfiles",
-        "//parser:parser"
+        "//parser:parser",
+        "//renderer:renderer"
     ],
     data=glob(["data/**"])
 )

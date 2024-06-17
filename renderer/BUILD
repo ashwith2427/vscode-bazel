@@ -1,0 +1,11 @@
+cc_library(
+    name="renderer",
+    srcs=["pipeline.cpp"],
+    hdrs=["pipeline.hpp"],
+    deps=[
+        "//third_party/glfw",
+        "//third_party/glm",
+        "@rules_vulkan//vulkan:vulkan_cc_library",
+    ],
+    visibility=["//visibility:public"]
+)
