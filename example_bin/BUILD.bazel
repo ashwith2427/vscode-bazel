@@ -9,7 +9,8 @@ cc_binary(
         # TODO: re-enable once satisfied with the results of the example build.
         "@bazel_tools//tools/cpp/runfiles",
         "//parser:parser",
-        "//renderer:renderer"
+        "//renderer:renderer",
+        "@freetype//:freetype"
     ],
     data=glob(["data/**"])
 )

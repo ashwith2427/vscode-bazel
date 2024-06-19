@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 6,
-  "moduleFileHash": "3063f1e9e3b1f2d667f289b1504b851a23c6d329b82d296cc6d3d0bd53c970ea",
+  "moduleFileHash": "1d6dc1d8faa75d7d8eb474124f43bb35d704876de78963e176cf1b9158b64e8e",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -27,6 +27,8 @@
       "deps": {
         "hedron_compile_commands": "hedron_compile_commands@_",
         "bazel_skylib": "bazel_skylib@1.7.1",
+        "freetype": "freetype@2.9",
+        "zlib": "zlib@1.3.1",
         "bazel_tools": "bazel_tools@_",
         "local_config_platform": "local_config_platform@_"
       }
@@ -132,6 +134,66 @@
           "integrity": "sha256-vCg8381SalLDIBJ5zaS8KYZS76iYsQtNsIN9xRZSdW8=",
           "strip_prefix": "",
           "remote_patches": {},
+          "remote_patch_strip": 0
+        }
+      }
+    },
+    "freetype@2.9": {
+      "name": "freetype",
+      "version": "2.9",
+      "key": "freetype@2.9",
+      "repoName": "freetype",
+      "executionPlatformsToRegister": [],
+      "toolchainsToRegister": [],
+      "extensionUsages": [],
+      "deps": {
+        "bazel_tools": "bazel_tools@_",
+        "local_config_platform": "local_config_platform@_"
+      },
+      "repoSpec": {
+        "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+        "ruleClassName": "http_archive",
+        "attributes": {
+          "urls": [
+            "https://download.savannah.gnu.org/releases/freetype/freetype-2.9.tar.gz"
+          ],
+          "integrity": "sha256-vzgOTXxPO1scGnsr86u5Z72l6atIDQ32VuDgjFAZxeY=",
+          "strip_prefix": "freetype-2.9",
+          "remote_patches": {
+            "https://bcr.bazel.build/modules/freetype/2.9/patches/add_build_file.patch": "sha256-wYf/d2HSVSt5mwiFdaOtYtsLe81YYJxnW16AFAgVYJk=",
+            "https://bcr.bazel.build/modules/freetype/2.9/patches/module_dot_bazel.patch": "sha256-ZLsAaH0i0tmnWzNG8HbpRJ7MuDrKohr7LBKzgzYxgnI="
+          },
+          "remote_patch_strip": 0
+        }
+      }
+    },
+    "zlib@1.3.1": {
+      "name": "zlib",
+      "version": "1.3.1",
+      "key": "zlib@1.3.1",
+      "repoName": "zlib",
+      "executionPlatformsToRegister": [],
+      "toolchainsToRegister": [],
+      "extensionUsages": [],
+      "deps": {
+        "platforms": "platforms@0.0.7",
+        "rules_cc": "rules_cc@0.0.9",
+        "bazel_tools": "bazel_tools@_",
+        "local_config_platform": "local_config_platform@_"
+      },
+      "repoSpec": {
+        "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+        "ruleClassName": "http_archive",
+        "attributes": {
+          "urls": [
+            "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz"
+          ],
+          "integrity": "sha256-mpOyt9/ax3zrpaVYpYDnRmfdb+3kWFuR7vtg8Dty3yM=",
+          "strip_prefix": "zlib-1.3.1",
+          "remote_patches": {
+            "https://bcr.bazel.build/modules/zlib/1.3.1/patches/add_build_file.patch": "sha256-Ei+FYaaOo7A3jTKunMEodTI0Uw5NXQyZEcboMC8JskY=",
+            "https://bcr.bazel.build/modules/zlib/1.3.1/patches/module_dot_bazel.patch": "sha256-IFCFES6KY2jaryT+Kq2NemDn7hgdZYH0kZC1esA4cyE="
+          },
           "remote_patch_strip": 0
         }
       }
@@ -283,7 +345,7 @@
         "buildozer": "buildozer@6.4.0.2",
         "platforms": "platforms@0.0.7",
         "com_google_protobuf": "protobuf@21.7",
-        "zlib": "zlib@1.3",
+        "zlib": "zlib@1.3.1",
         "build_bazel_apple_support": "apple_support@1.5.0",
         "local_config_platform": "local_config_platform@_"
       }
@@ -764,7 +826,7 @@
         "rules_java": "rules_java@7.4.0",
         "rules_pkg": "rules_pkg@0.7.0",
         "com_google_abseil": "abseil-cpp@20211102.0",
-        "zlib": "zlib@1.3",
+        "zlib": "zlib@1.3.1",
         "upb": "upb@0.0.0-20220923-a547704",
         "rules_jvm_external": "rules_jvm_external@4.4.2",
         "com_google_googletest": "googletest@1.11.0",
@@ -787,37 +849,6 @@
             "https://bcr.bazel.build/modules/protobuf/21.7/patches/add_missing_files.patch": "sha256-Hyne4DG2u5bXcWHNxNMirA2QFAe/2Cl8oMm1XJdkQIY="
           },
           "remote_patch_strip": 1
-        }
-      }
-    },
-    "zlib@1.3": {
-      "name": "zlib",
-      "version": "1.3",
-      "key": "zlib@1.3",
-      "repoName": "zlib",
-      "executionPlatformsToRegister": [],
-      "toolchainsToRegister": [],
-      "extensionUsages": [],
-      "deps": {
-        "platforms": "platforms@0.0.7",
-        "rules_cc": "rules_cc@0.0.9",
-        "bazel_tools": "bazel_tools@_",
-        "local_config_platform": "local_config_platform@_"
-      },
-      "repoSpec": {
-        "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-        "ruleClassName": "http_archive",
-        "attributes": {
-          "urls": [
-            "https://github.com/madler/zlib/releases/download/v1.3/zlib-1.3.tar.gz"
-          ],
-          "integrity": "sha256-/wukwpIBPbwnUws6geH5qBPNOd4Byl4Pi/NVcC76WT4=",
-          "strip_prefix": "zlib-1.3",
-          "remote_patches": {
-            "https://bcr.bazel.build/modules/zlib/1.3/patches/add_build_file.patch": "sha256-Ei+FYaaOo7A3jTKunMEodTI0Uw5NXQyZEcboMC8JskY=",
-            "https://bcr.bazel.build/modules/zlib/1.3/patches/module_dot_bazel.patch": "sha256-fPWLM+2xaF/kuy+kZc1YTfW6hNjrkG400Ho7gckuyJk="
-          },
-          "remote_patch_strip": 0
         }
       }
     },

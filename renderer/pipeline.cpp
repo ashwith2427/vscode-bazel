@@ -123,6 +123,7 @@ namespace vo::create{
 
         auto pickPhysicalDevice=[](const vk::raii::PhysicalDevice& physicalDevice){
             auto features=physicalDevice.getFeatures();
+            features.fillModeNonSolid=vk::True;
             auto properties=physicalDevice.getProperties();
             return features.geometryShader && properties.deviceType==vk::PhysicalDeviceType::eDiscreteGpu;
         };
@@ -146,11 +147,14 @@ namespace vo::create{
             1,
             &priority
         );
+        vk::PhysicalDeviceFeatures features=physicalDevice.getFeatures();
+        features.fillModeNonSolid=vk::True;
         vk::DeviceCreateInfo deviceInfo(
             {},
             queueInfo,
             layers,
-            extensions
+            extensions,
+            &features
         );
 
         return physicalDevice.createDevice(deviceInfo);
@@ -300,7 +304,7 @@ namespace vo::create{
         };
         vk::PipelineInputAssemblyStateCreateInfo assemblyInfo(
             {},
-            vk::PrimitiveTopology::eTriangleList
+            vk::PrimitiveTopology::eLineStrip
         );
 
         auto bindingDescription=Vertex::getBindingDescription();
@@ -316,14 +320,14 @@ namespace vo::create{
             {},
             vk::False,
             vk::False,
-            vk::PolygonMode::eFill,
+            vk::PolygonMode::eLine,
             vk::CullModeFlagBits::eBack,
             vk::FrontFace::eClockwise,
             vk::False,
             {},
             {},
             {},
-            1.0f
+            3.0f
         );
 
         vk::PipelineMultisampleStateCreateInfo multisampleInfo(
@@ -554,7 +558,7 @@ namespace vo::utils{
             const std::vector<vk::raii::Framebuffer>& framebuffers,
             const vk::raii::Queue& graphicsQueue,
             const vk::raii::Buffer& vertexbuffer,
-            int size
+            const std::vector<Vertex>& vertices
     ){
         device.waitForFences(*fence,vk::True,UINT64_MAX);
         device.resetFences(*fence);
@@ -569,7 +573,7 @@ namespace vo::utils{
             swapchain.extent
         );
         vk::ClearValue clearValue(
-            vk::ClearColorValue(0.0f,0.0f,0.0f,0.0f)
+            vk::ClearColorValue(1.0f,1.0f,1.0f,0.0f)
         );
         vk::RenderPassBeginInfo rpbeginInfo(
             renderpass,
@@ -598,7 +602,7 @@ namespace vo::utils{
         commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics,pipeline);
         vk::DeviceSize offset[]={0};
         commandBuffer.bindVertexBuffers(0,*vertexbuffer,offset);
-        commandBuffer.draw(size,1,0,0);
+        commandBuffer.draw(vertices.size(),1,0,0);
         commandBuffer.endRenderPass();
         commandBuffer.end();
         vk::PresentInfoKHR presentInfo(

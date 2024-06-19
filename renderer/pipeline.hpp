@@ -141,7 +141,7 @@ namespace vo{
             const std::vector<vk::raii::Framebuffer>& framebuffers,
             const vk::raii::Queue& graphicsQueue,
             const vk::raii::Buffer& vertexbuffer,
-            int size
+            const std::vector<Vertex>& vertices
         );
         uint32_t findMemoryType(
             const vk::raii::PhysicalDevice& device,

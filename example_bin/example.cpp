@@ -1,10 +1,20 @@
+#include <algorithm>
+#include <iomanip>
 #include <renderer/pipeline.hpp>
+#include <parser/parser.hpp>
 #include <fstream>
 #include <format>
 #include "tools/cpp/runfiles/runfiles.h"
 #include <thread>
+#include <ranges>
 
 using bazel::tools::cpp::runfiles::Runfiles;
+
+const std::vector<Vertex> vertices={
+    {{0.0f,-0.5f},{1.0f,1.0f,1.0f}},
+    {{0.5f,0.0f},{0.0f,1.0f,1.0f}},
+    {{-0.5f,0.0f},{0.0f,0.0f,1.0f}}
+};
 
 std::vector<const char*> instanceExtensions={
     VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
@@ -18,12 +28,6 @@ std::vector<const char*> instanceLayers={
 
 std::vector<const char*> deviceExtensions={
     VK_KHR_SWAPCHAIN_EXTENSION_NAME,
-};
-
-const std::vector<Vertex> vertices = {
-    {{0.0f, -0.5f}, {1.0f, 1.0f, 1.0f}},
-    {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-    {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
 };
 
 static std::vector<char> readFile(const std::string& path){
@@ -40,11 +44,14 @@ static std::vector<char> readFile(const std::string& path){
     return buffer;
 }
 
+
+
 int main(int argc, char** argv){
     std::string error;
     std::unique_ptr<Runfiles> runfiles(Runfiles::Create(argv[0], &error));
     std::string vertPath = runfiles->Rlocation("_main/example_bin/data/shaders/vert.spv");
     std::string fragPath = runfiles->Rlocation("_main/example_bin/data/shaders/frag.spv");
+    std::string fontPath = runfiles->Rlocation("_main/example_bin/data/Roboto-Black.ttf");
     GLFWwindow* handle=vo::create::window(600,500,"Vulkan");
     vk::raii::Context context{};
     vk::raii::Instance instance=vo::create::instance(
@@ -79,15 +86,16 @@ int main(int argc, char** argv){
 
     vk::raii::Buffer vertexBuffer=vo::create::vertexbuffer(device, vertices);
     vk::MemoryRequirements memRequirements=vertexBuffer.getMemoryRequirements();
-    uint32_t memType=vo::utils::findMemoryType(
-        physicalDevice,
-        memRequirements.memoryTypeBits,
-        vk::MemoryPropertyFlagBits::eHostVisible |
-        vk::MemoryPropertyFlagBits::eHostCoherent
-    );
+        uint32_t memType=vo::utils::findMemoryType(
+            physicalDevice,
+            memRequirements.memoryTypeBits,
+            vk::MemoryPropertyFlagBits::eHostVisible |
+            vk::MemoryPropertyFlagBits::eHostCoherent
+        );
 
     vk::raii::DeviceMemory memory=vo::utils::allocateBuffer(device,memRequirements,memType);
     vo::utils::fillBuffer(vertexBuffer,memory,memRequirements,vertices);
+
     auto vertexCode=readFile(vertPath);
     auto fragmentCode=readFile(fragPath);
     vk::raii::ShaderModule vertexShaderModule=vo::create::shaderModule(device,vertexCode);
@@ -126,8 +134,9 @@ int main(int argc, char** argv){
             framebuffers,
             graphicsQueue,
             vertexBuffer,
-            vertices.size()
+            vertices
         );
         device.waitIdle();
     }
+
 }
